@@ -17,7 +17,7 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.9"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % "test"
 libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % "test"
 libraryDependencies += "uk.gov.hmrc.mongo" %% "hmrc-mongo-test-play-28" % "0.50.0"
-
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "uk.gov.hmrc.agentsBackend.controllers._"

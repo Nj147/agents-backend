@@ -3,10 +3,9 @@ package connectors
 import models._
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repos.AgentDetailsRepo
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-class AgentDetailsRepoSpec extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentDetails]{
+class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentDetails]{
   lazy val repository = new AgentDetailsRepo(mongoComponent)
   def agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, "testMoc", "testAddressLine1", "testAddressline2", "testCity", "testPostcode")
 

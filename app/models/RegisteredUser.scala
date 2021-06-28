@@ -8,8 +8,8 @@ object AgentDetails{
   implicit val format: OFormat[AgentDetails] = Json.format[AgentDetails]
 }
 
-case class User(arn: String, password: String)
+case class AgentLogin(arn: String, password: String)
 
-object User{
-  implicit val format: OFormat[User] = Json.format[User]
+object AgentLogin{
+  implicit val format: OFormat[AgentLogin] = Json.format[AgentLogin]
 }
