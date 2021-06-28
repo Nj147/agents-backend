@@ -18,7 +18,10 @@ class AgentLoginRepo @Inject() (mongoComponent: MongoComponent) extends PlayMong
 
   def createAgentLogin(agent: AgentLogin): Future[Boolean] = collection.insertOne(agent).toFuture().map{ _ => true}.recover{case _ => false}
 
-  def readAgent(arn: String): Future[AgentLogin] = collection.find(filter = Filters.eq("arn", arn)).first().toFuture().recover{case _ => null}
+  def readAgent(arn: String): Future[Option[AgentLogin]] = collection.find(filter = Filters.eq("arn", arn)).first().toFutureOption()
 
-  def checkAgent(agent: AgentLogin): Future[Boolean] = readAgent(agent.arn).map(user => BCrypt.checkpw(agent.password, user.password))
+  def checkAgent(agent: AgentLogin): Future[Boolean] = readAgent(agent.arn).map{
+    case Some(user) => BCrypt.checkpw(agent.password, user.password)
+    case None => false
+  }
 }
