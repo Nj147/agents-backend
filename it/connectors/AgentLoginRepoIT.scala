@@ -25,7 +25,7 @@ class AgentLoginRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositoryS
       await(repository.createAgentLogin(agent: AgentLogin))
       await(repository.readAgent(agent.arn: String)) shouldBe Some(agent)
     }
-    "return null if the agents dosent exists" in {
+    "return none if the agents dosent exists" in {
       await(repository.readAgent(agent.arn: String)) shouldBe None
     }
   }

@@ -24,7 +24,7 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
       await(repository.createAgent(agent: AgentDetails))
       await(repository.getDetails("ARN00000": String)) shouldBe Some(agent)
     }
-    "returns a null object if the user does not exist" in {
+    "returns none if the user does not exist" in {
       await(repository.getDetails("ARN00000": String)) shouldBe None
     }
   }
