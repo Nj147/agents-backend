@@ -1,12 +1,14 @@
-package models
+package repos
 
 import com.mongodb.client.model.Indexes.ascending
+import models.AgentLogin
+import org.mindrot.jbcrypt.BCrypt
 import org.mongodb.scala.model.{Filters, IndexModel, IndexOptions}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
-import scala.concurrent.ExecutionContext.Implicits.global
+
 import javax.inject.Inject
-import org.mindrot.jbcrypt.BCrypt
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class AgentLoginRepo @Inject() (mongoComponent: MongoComponent) extends PlayMongoRepository[AgentLogin](
