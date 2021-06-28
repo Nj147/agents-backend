@@ -3,12 +3,13 @@ package connectors
 import models._
 import org.mindrot.jbcrypt.BCrypt
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import repos.AgentLoginRepo
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 class AgentLoginRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentLogin]{
   lazy val repository = new AgentLoginRepo(mongoComponent)
 
-  val agent = AgentLogin("ARN101", BCrypt.hashpw("password", BCrypt.gensalt(12)))
+  val agent = AgentLogin("ARN101", BCrypt.hashpw("password", BCrypt.gensalt()))
 
   "createAgentLogin" should {
     "return a true if the details dont exist already" in {
@@ -37,7 +38,7 @@ class AgentLoginRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositoryS
     }
     "return false if the details are wrong" in {
       await(repository.createAgentLogin(agent: AgentLogin))
-      await(repository.checkAgent(agent.copy(password = BCrypt.hashpw("password1", BCrypt.gensalt(12))): AgentLogin)) shouldBe false
+      await(repository.checkAgent(agent.copy(password = BCrypt.hashpw("password1", BCrypt.gensalt())): AgentLogin)) shouldBe false
     }
   }
 

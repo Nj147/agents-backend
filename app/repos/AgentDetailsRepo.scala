@@ -1,9 +1,11 @@
 package repos
 import com.mongodb.client.model.Indexes.ascending
 import models._
+import org.mongodb.scala.Observable
 import org.mongodb.scala.model.{Filters, IndexModel, IndexOptions}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future

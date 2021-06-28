@@ -13,3 +13,9 @@ case class AgentLogin(arn: String, password: String)
 object AgentLogin{
   implicit val format: OFormat[AgentLogin] = Json.format[AgentLogin]
 }
+
+case class RegisteringUser(password: String, businessName: String, email: String, mobileNumber: Int, moc: String, addresslineOne: String, addressLineTwo: String, city: String, postcode: String)
+
+object RegisteringUser{
+  implicit val format: OFormat[RegisteringUser] = Json.format[RegisteringUser]
+}
