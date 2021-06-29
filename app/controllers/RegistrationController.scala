@@ -19,6 +19,4 @@ class RegistrationController @Inject()(val controllerComponents: ControllerCompo
       case JsError(_) => Future(BadRequest)
     }
   }
-
-
 }
