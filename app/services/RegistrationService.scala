@@ -3,7 +3,6 @@ package services
 import models.{AgentDetails, AgentLogin, RegisteringUser}
 import org.mindrot.jbcrypt.BCrypt
 import repos.{AgentDetailsRepo, AgentLoginRepo}
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import java.util.UUID
 import javax.inject.Inject
