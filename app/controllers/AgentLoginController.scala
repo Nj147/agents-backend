@@ -23,7 +23,7 @@ class AgentLoginController @Inject()(val controllerComponents: ControllerCompone
     request.body.validate[AgentLogin] match {
       case JsSuccess(agentLogin, _) => service.checkAgentLogin(agentLogin).map {
         case true => Ok("Agent Login found!")
-        case false => BadRequest("Agent Login not found!")
+        case false => InternalServerError("Agent Login not found!")
       }
       case JsError(errors) => Future(BadRequest(errors.toString()))
     }
