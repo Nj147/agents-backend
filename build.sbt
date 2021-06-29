@@ -24,3 +24,5 @@ libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "uk.gov.hmrc.agentsBackend.binders._"
+
+PlayKeys.devSettings := Seq("play.server.http.port" -> "9009")
