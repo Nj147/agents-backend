@@ -13,7 +13,7 @@ class RegistrationService @Inject()(agentDetailsRepo: AgentDetailsRepo, agentLog
   def register(agent: RegisteringUser): Future[Boolean] = {
     val arn = createARN()
     for {
-      createAgent <- agentDetailsRepo.createAgent(AgentDetails(arn, agent.businessName, agent.email, agent.mobileNumber, agent.moc, agent.addresslineOne, agent.addressLineTwo, agent.city, agent.postcode))
+      createAgent <- agentDetailsRepo.createAgent(AgentDetails(arn, agent.businessName, agent.email, agent.mobileNumber, agent.moc, agent.propertyNumber, agent.postcode))
       createLogin <- agentLoginRepo.createAgentLogin(AgentLogin(arn, BCrypt.hashpw(agent.password, BCrypt.gensalt())))
     } yield (createAgent, createLogin) match {
       case (true, true) => true

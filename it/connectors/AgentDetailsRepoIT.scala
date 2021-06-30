@@ -7,7 +7,7 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentDetails]{
   lazy val repository = new AgentDetailsRepo(mongoComponent)
-  def agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, "testMoc", "testAddressLine1", "testAddressline2", "testCity", "testPostcode")
+  def agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, "testMoc", "testAddressLine1", "testPostcode")
 
   "createAgent" should {
     "return true when agent details are inserted in the db" in {

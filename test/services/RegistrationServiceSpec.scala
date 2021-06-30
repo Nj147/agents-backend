@@ -12,7 +12,7 @@ class RegistrationServiceSpec extends AbstractServiceTest {
   val detailsRepo: AgentDetailsRepo = mock(classOf[AgentDetailsRepo])
   val loginRepo: AgentLoginRepo = mock(classOf[AgentLoginRepo])
   val service = new RegistrationService(detailsRepo, loginRepo)
-  val agent = RegisteringUser("password", "business", "email", 1234, "moc", "addressline1", "addressline2", "city", "postcode")
+  val agent = RegisteringUser("password", "business", "email", 1234, "moc", "addressline1", "postcode")
 
   "register" should {
     "return a true" in {
