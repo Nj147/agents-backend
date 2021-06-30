@@ -11,4 +11,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 POST    /registerAgent              controllers.RegistrationController.registerAgent()
 
 +nocsrf
-POST    /check-agent-login          controllers.HomeController.checkAgentLogin()
+POST    /check-agent-login          controllers.AgentLoginController.checkAgentLogin()
+
++nocsrf
+POST    /readAgent                  controllers.ClientController.readAgent()
