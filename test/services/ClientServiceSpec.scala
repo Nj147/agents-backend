@@ -12,7 +12,7 @@ class ClientServiceSpec extends AbstractServiceTest{
 
   val repo = mock(classOf[AgentDetailsRepo])
   val service = new ClientService(repo)
-  val agent = AgentDetails("ARN0001", "Big Business", "test@test.com", 123456789, "call", "1 New Street", "A01 2BC")
+  val agent = AgentDetails("ARN0001", "Big Business", "test@test.com", 123456789, List("gg"), "1 New Street", "A01 2BC")
   val agentClient = AgentClientDetails("ARN0001", "Big Business", "test@test.com")
   "readAgent" should {
     "return an AgentClientDetails when agent can't be found" in {
