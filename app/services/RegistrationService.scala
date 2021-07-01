@@ -16,7 +16,8 @@ class RegistrationService @Inject()(agentDetailsRepo: AgentDetailsRepo, agentLog
       createAgent <- agentDetailsRepo.createAgent(AgentDetails(arn, agent.businessName, agent.email, agent.mobileNumber, agent.moc, agent.propertyNumber, agent.postcode))
       createLogin <- agentLoginRepo.createAgentLogin(AgentLogin(arn, BCrypt.hashpw(agent.password, BCrypt.gensalt())))
     } yield (createAgent, createLogin) match {
-      case (true, true) => Some(arn)
+      case (true, true) =>
+        Some(arn)
       case _ => None
     }
   }

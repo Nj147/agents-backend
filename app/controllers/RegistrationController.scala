@@ -14,7 +14,8 @@ class RegistrationController @Inject()(val controllerComponents: ControllerCompo
   def registerAgent(): Action[JsValue] = Action.async(parse.json) {
     _.body.validate[RegisteringUser] match {
       case JsSuccess(x, _) => service.register(x).map {
-        case Some(arn) => Created(Json.toJson(arn))
+        case Some(arn) =>
+          Created(Json.toJson(arn))
         case None => InternalServerError
       }
       case JsError(_) => Future(BadRequest)
