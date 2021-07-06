@@ -15,7 +15,10 @@ class RegistrationController @Inject()(val controllerComponents: ControllerCompo
     _.body.validate[RegisteringUser] match {
       case JsSuccess(x, _) => service.register(x).map {
         case Some(arn) =>
-          Created(Json.toJson(arn))
+          Created(Json.parse(
+            s"""{
+               |"arn" : "$arn"
+               |}""".stripMargin))
         case None => InternalServerError
       }
       case JsError(_) => Future(BadRequest)
