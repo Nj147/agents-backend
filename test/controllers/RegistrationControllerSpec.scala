@@ -3,11 +3,13 @@ package controllers
 import models.RegisteringUser
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
+import play.api.Play.materializer
 import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import repos.{AgentDetailsRepo, AgentLoginRepo}
 import services.RegistrationService
+
 import scala.concurrent.Future
 
 class RegistrationControllerSpec extends AbstractControllerTest {
@@ -25,6 +27,10 @@ class RegistrationControllerSpec extends AbstractControllerTest {
       when(service.register(any())) thenReturn(Future.successful(None))
       val result = controller.registerAgent().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(obj)))
       status(result) shouldBe 500
+    }
+    "returns 400 Badrequest" in {
+      val result = controller.registerAgent().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
+      status(result) shouldBe 400
     }
   }
 }

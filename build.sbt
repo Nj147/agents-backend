@@ -1,9 +1,27 @@
+import scoverage.ScoverageKeys
+
 name := """agentsBackend"""
 organization := "uk.gov.hmrc.agentsBackend"
 
 version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
+  .settings(routesGenerator := InjectedRoutesGenerator)
+  .configs(ITest)
+  .settings( inConfig(ITest)(Defaults.testSettings) : _*)
+  .settings(
+    fork in IntegrationTest := false,
+    unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest)(base => Seq(base / "it")).value,
+    unmanagedResourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest)(base => Seq(base / "it" / "resources")).value)
+  .settings(scoverageSettings)
+lazy val ITest = config("it") extend(Test)
+
+lazy val scoverageSettings = Seq(
+  ScoverageKeys.coverageExcludedPackages := "<empty>;Reverse.*;config.*;.*(AuthService|BuildInfo|Routes).*",
+  ScoverageKeys.coverageMinimumStmtTotal := 95,
+  ScoverageKeys.coverageFailOnMinimum := true,
+  ScoverageKeys.coverageHighlighting := true
+)
 
 scalaVersion := "2.12.13"
 

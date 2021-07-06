@@ -29,5 +29,4 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
   }
 
-
 }

@@ -3,7 +3,7 @@ package controllers
 import models.{AgentCheck, RegisteringUser}
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
-import services.{AgentLoginService, ClientService}
+import services.ClientService
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global

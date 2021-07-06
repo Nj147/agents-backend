@@ -7,31 +7,31 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import repos.{AgentDetailsRepo, AgentLoginRepo}
-import services.AgentLoginService
 
 import scala.concurrent.Future
 
 class AgentLoginControllerSpec extends AbstractControllerTest {
-  val agentDetailsRepo = mock(classOf[AgentDetailsRepo])
-  val agentLoginRepo = mock(classOf[AgentLoginRepo])
-  val service = mock(classOf[AgentLoginService])
-  val controller = new AgentLoginController(Helpers.stubControllerComponents(), service)
-  val agentLogin = AgentLogin("arnNo", "pa55w0rd")
+  val agentDetailsRepo: AgentDetailsRepo = mock(classOf[AgentDetailsRepo])
+  val agentLoginRepo: AgentLoginRepo = mock(classOf[AgentLoginRepo])
+  val repo: AgentLoginRepo = mock(classOf[AgentLoginRepo])
+  val controller = new AgentLoginController(Helpers.stubControllerComponents(), repo)
+  val agentLogin: AgentLogin = AgentLogin("arnNo", "pa55w0rd")
 
 
   "checkAgentLogin" should {
     "return a 200 status when checkAgentLogin is successful" in {
-      when(service.checkAgentLogin(any())) thenReturn Future.successful(true)
+      when(repo.checkAgent(any())) thenReturn Future.successful(true)
       val result = controller.checkAgentLogin().apply(FakeRequest().withHeaders().withBody(Json.toJson(agentLogin)))
       status(result) shouldBe 200
     }
-    "return a 400 status when checkAgentLogin is unsuccessful" in {
-      when(service.checkAgentLogin(any())) thenReturn Future.successful(false)
+    "return a 500 status when checkAgentLogin is unsuccessful" in {
+      when(repo.checkAgent(any())) thenReturn Future.successful(false)
       val result = controller.checkAgentLogin().apply(FakeRequest().withHeaders().withBody(Json.toJson(agentLogin)))
       status(result) shouldBe 500
     }
+    "returns 400 Badrequest" in {
+      val result = controller.checkAgentLogin().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
+      status(result) shouldBe 400
+    }
   }
-
-
-
 }
