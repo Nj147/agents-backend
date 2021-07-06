@@ -3,11 +3,9 @@ package controllers
 import models.RegisteringUser
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
-import play.api.Play.materializer
 import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
-import repos.{AgentDetailsRepo, AgentLoginRepo}
 import services.RegistrationService
 
 import scala.concurrent.Future
