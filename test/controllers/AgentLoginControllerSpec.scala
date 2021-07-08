@@ -24,12 +24,12 @@ class AgentLoginControllerSpec extends AbstractControllerTest {
       val result = controller.checkAgentLogin().apply(FakeRequest().withHeaders().withBody(Json.toJson(agentLogin)))
       status(result) shouldBe 200
     }
-    "return a 500 status when checkAgentLogin is unsuccessful" in {
+    "return a 404 status when checkAgentLogin is unsuccessful" in {
       when(repo.checkAgent(any())) thenReturn Future.successful(false)
       val result = controller.checkAgentLogin().apply(FakeRequest().withHeaders().withBody(Json.toJson(agentLogin)))
-      status(result) shouldBe 500
+      status(result) shouldBe 404
     }
-    "returns 400 Badrequest" in {
+    "returns 400 not found" in {
       val result = controller.checkAgentLogin().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
       status(result) shouldBe 400
     }
