@@ -13,7 +13,7 @@ import scala.concurrent.Future
 class RegistrationControllerSpec extends AbstractControllerTest {
   val service: RegistrationService = mock(classOf[RegistrationService])
   val controller = new RegistrationController(Helpers.stubControllerComponents(), service)
-  val obj = RegisteringUser("password", "business", "email", 1234, List("gg"), "addressline1", "postcode")
+  val obj: RegisteringUser = RegisteringUser("password", "business", "email", 1234, List("gg"), "addressline1", "postcode")
 
   "registerAgent" should {
     "return 201 Created" in {

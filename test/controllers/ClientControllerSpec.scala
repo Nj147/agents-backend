@@ -11,9 +11,9 @@ import services.ClientService
 import scala.concurrent.Future
 
 class ClientControllerSpec extends AbstractControllerTest {
-  val service = mock(classOf[ClientService])
+  val service: ClientService = mock(classOf[ClientService])
   val controller = new ClientController(Helpers.stubControllerComponents(), service)
-  val agent = AgentClientDetails("ARN0001", "TestName", "test@test,com")
+  val agent: AgentClientDetails = AgentClientDetails("ARN0001", "TestName", "test@test,com")
   "POST /readAgent" should {
     "return OK response containing AgentClientDetails if matching ARN is found" in {
       when(service.readAgent(any())) thenReturn Future.successful(Some(agent))

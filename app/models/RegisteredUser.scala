@@ -2,7 +2,7 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AgentDetails(arn: String, businessName: String, email: String, mobileNumber: Int, moc: List[String], propertyNumber: String, postcode: String)
+case class AgentDetails(arn: String, businessName: String, email: String, mobileNumber: Long, moc: List[String], propertyNumber: String, postcode: String)
 
 object AgentDetails{
   implicit val format: OFormat[AgentDetails] = Json.format[AgentDetails]
@@ -14,7 +14,7 @@ object AgentLogin{
   implicit val format: OFormat[AgentLogin] = Json.format[AgentLogin]
 }
 
-case class RegisteringUser(password: String, businessName: String, email: String, mobileNumber: Int, moc: List[String], propertyNumber: String, postcode: String)
+case class RegisteringUser(password: String, businessName: String, email: String, mobileNumber: Long, moc: List[String], propertyNumber: String, postcode: String)
 
 object RegisteringUser{
   implicit val format: OFormat[RegisteringUser] = Json.format[RegisteringUser]
