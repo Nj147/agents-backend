@@ -2,6 +2,8 @@ package repos
 import com.mongodb.client.model.Indexes.ascending
 import models._
 import org.mongodb.scala.Observable
+import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Updates.{combine, set}
 import org.mongodb.scala.model.{Filters, IndexModel, IndexOptions}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
@@ -22,5 +24,7 @@ class AgentDetailsRepo @Inject() (mongoComponent: MongoComponent) extends PlayMo
 
   //GetS all the details for the agent by specifying the ARN
   def getDetails(arn: String) : Future[Option[AgentDetails]] = collection.find(filter = Filters.eq("arn", arn)).first().toFutureOption()
+
+  def updateDetails(agent: AgentDetails): Future[Boolean] = collection.updateOne(equal("arn", agent.arn), combine(set("businessName", agent.businessName), set("email", agent.email), set("mobileNumber", agent.mobileNumber), set("moc", agent.moc), set("propertyNumber", agent.propertyNumber), set("postcode", agent.postcode))).toFuture().map(_ => true).recover{case _ => false}
 
 }

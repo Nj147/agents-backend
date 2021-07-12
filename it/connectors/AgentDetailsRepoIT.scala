@@ -5,9 +5,11 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repos.AgentDetailsRepo
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentDetails]{
+class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentDetails] {
   lazy val repository = new AgentDetailsRepo(mongoComponent)
-  def agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("gg"), "testAddressLine1", "testPostcode")
+
+  def agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("test"), "testAddressLine1", "testPostcode")
+  def agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
 
   "createAgent" should {
     "return true when agent details are inserted in the db" in {
@@ -28,5 +30,16 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
       await(repository.getDetails("ARN00000": String)) shouldBe None
     }
   }
+
+  "updateDetails" should {
+    "returns true if the details are added in db" in {
+      await(repository.createAgent(agent: AgentDetails))
+      await(repository.updateDetails(agent2: AgentDetails)) shouldBe true
+    }
+    "returns false if the details havent been updated" in {
+      await(repository.updateDetails(agent2.copy(arn = "a009"): AgentDetails)) shouldBe false
+    }
+  }
+
 
 }
