@@ -20,4 +20,4 @@ POST    /readAgent                  controllers.ClientController.readAgent()
 PATCH   /update-address             controllers.ChangeAgentDetailsController.updateAddress
 
 +nocsrf
-PATCH   /updateContactNumber        controllers.ChangeAgentDetailsController.updateContactNumber()
+PATCH   /update-contact-number        controllers.ChangeAgentDetailsController.updateContactNumber()
