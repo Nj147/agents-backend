@@ -9,6 +9,7 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
   lazy val repository = new AgentDetailsRepo(mongoComponent)
 
   def agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("test"), "testAddressLine1", "testPostcode")
+
   def agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
 
   "createAgent" should {
@@ -31,6 +32,14 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
   }
 
-
+  "UpdateEmail" should {
+    "returns true if the email updated" in {
+      await(repository.createAgent(agent: AgentDetails))
+      await(repository.updateEmail(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe true
+    }
+    "returns false if the email is not updated" in {
+      await(repository.updateEmail(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe false
+    }
+  }
 
 }
