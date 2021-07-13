@@ -3,14 +3,10 @@ package controllers
 import models.ContactNumber
 import scala.concurrent.ExecutionContext.Implicits.global
 import models.AgentAddress
-import play.api.libs.json.{JsError, JsSuccess, JsValue}
-import play.api.mvc.{Action, BaseController, ControllerComponents}
-import repos.AgentDetailsRepo
-import models.{AgentCheck, AgentDetails}
+import models.AgentCheck
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
-
 import javax.inject.Inject
 import scala.concurrent.Future
 
