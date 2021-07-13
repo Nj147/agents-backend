@@ -70,7 +70,6 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
         await(repository.updateContactNumber(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe false
       }
     }
-
   }
 
   "UpdateCorrespondence" should {
