@@ -27,3 +27,6 @@ PATCH   /update-contact-number        controllers.ChangeAgentDetailsController.u
 
 +nocsrf
 PATCH   /update-email               controllers.ChangeAgentDetailsController.updateEmail()
+
++nocsrf
+PATCH   /update-email               controllers.ChangeAgentDetailsController.updateEmail()
