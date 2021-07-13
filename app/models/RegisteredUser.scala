@@ -32,10 +32,10 @@ object AgentCheck{
   implicit val format: OFormat[AgentCheck] = Json.format[AgentCheck]
 }
 
-case class UpdateCorrespondence(arn: String, moc: List[String])
+case class AgentCorrespondence(arn: String, moc: List[String])
 
-object UpdateCorrespondence{
-  implicit val format: OFormat[UpdateCorrespondence] = Json.format[UpdateCorrespondence]
+object AgentCorrespondence{
+  implicit val format: OFormat[AgentCorrespondence] = Json.format[AgentCorrespondence]
 }
 
 case class ContactNumber(arn: String, contactNumber: Long)

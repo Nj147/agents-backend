@@ -37,7 +37,7 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
     }
   }
 
-  def updateCorrespondence(updateCorrespondence: UpdateCorrespondence): Future[Boolean] = collection.updateOne(equal("arn", updateCorrespondence.arn), combine(set("moc", updateCorrespondence.moc))).toFuture()
+  def updateCorrespondence(agentCorrespondence: AgentCorrespondence): Future[Boolean] = collection.updateOne(equal("arn", agentCorrespondence.arn), combine(set("moc", agentCorrespondence.moc))).toFuture()
     .map {
       _.getMatchedCount match {
         case 1 => true
