@@ -7,7 +7,6 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import services.RegistrationService
-
 import scala.concurrent.Future
 
 class RegistrationControllerSpec extends AbstractControllerTest {
@@ -17,12 +16,12 @@ class RegistrationControllerSpec extends AbstractControllerTest {
 
   "registerAgent" should {
     "return 201 Created" in {
-      when(service.register(any())) thenReturn(Future.successful(Some("ARN250")))
+      when(service.register(any())) thenReturn (Future.successful(Some("ARN250")))
       val result = controller.registerAgent().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(obj)))
       status(result) shouldBe 201
     }
     "return 500 InternalServerError" in {
-      when(service.register(any())) thenReturn(Future.successful(None))
+      when(service.register(any())) thenReturn (Future.successful(None))
       val result = controller.registerAgent().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(obj)))
       status(result) shouldBe 500
     }

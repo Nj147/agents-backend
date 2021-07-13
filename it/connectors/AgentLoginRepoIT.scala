@@ -6,7 +6,7 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repos.AgentLoginRepo
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-class AgentLoginRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentLogin]{
+class AgentLoginRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentLogin] {
   lazy val repository = new AgentLoginRepo(mongoComponent)
 
   val agent: AgentLogin = AgentLogin("ARN101", BCrypt.hashpw("password", BCrypt.gensalt()))

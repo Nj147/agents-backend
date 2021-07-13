@@ -5,10 +5,11 @@ import play.api.libs.json.{JsSuccess, JsValue, Json}
 class AgentLoginSpec extends AbstractModelsTest {
 
   val agentLoginModel: AgentLogin = AgentLogin(arn = "ARN51226238", password = "testPassword")
-  val agentLoginJs: JsValue = Json.parse("""{
-                                           |    "arn" : "ARN51226238",
-                                           |    "password" : "testPassword"
-                                           |}""".stripMargin)
+  val agentLoginJs: JsValue = Json.parse(
+    """{
+      |    "arn" : "ARN51226238",
+      |    "password" : "testPassword"
+      |}""".stripMargin)
 
   "AgentLogin" should {
     "format from case class to json" in {
