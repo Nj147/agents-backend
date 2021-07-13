@@ -43,21 +43,21 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
 
   "updateContactNumber" should {
     "return 202" when {
-      "if the update is accepted" in {
+      "the update is accepted" in {
         when(repo.updateContactNumber(any())) thenReturn (Future.successful(true))
         val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
         status(result) shouldBe 202
       }
     }
     "return 406" when {
-      "if the update is not accepted" in {
+      "the update is not accepted" in {
         when(repo.updateContactNumber(any())) thenReturn (Future.successful(false))
         val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
         status(result) shouldBe 406
       }
     }
     "returns 400" when {
-      "if valid json is not given" in {
+      "valid json is not given" in {
         val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
         status(result) shouldBe 400
       }
