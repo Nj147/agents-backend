@@ -1,6 +1,6 @@
 package controllers
 
-import models.{AgentAddress, AgentCheck, AgentDetails, ContactNumber}
+import models.{AgentAddress, AgentEmail, AgentCorrespondence, AgentCheck, AgentDetails, ContactNumber}
 import play.api.http.Status._
 import org.mockito.ArgumentMatchers.any
 import play.api.test.{FakeRequest, Helpers}
@@ -116,30 +116,6 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
     "return a bad request status" when {
       "the received JsValue is not a valid agent correspondence" in {
         val result = controller.updateCorrespondence().apply(FakeRequest().withBody(Json.toJson("" -> "")))
-        status(result) shouldBe BAD_REQUEST
-      }
-    }
-  }
-  "updateEmail;  /update-email" should {
-    "return an accepted status" when {
-      "the received JsValue is a valid agent email address and the update is successful" in {
-        when(repo.updateEmail(any())) thenReturn(Future.successful(true))
-        val result = controller.updateEmail().apply(FakeRequest("PATCH", "/update-email").withBody(Json.toJson(agentEmail)))
-        status(result) shouldBe ACCEPTED
-      }
-    }
-
-    "return an unacceptable status" when {
-      "the received JsValue is a valid agent email address but nothing in the database is updated" in {
-        when(repo.updateEmail(any())) thenReturn Future.successful(false)
-        val result = controller.updateEmail().apply(FakeRequest("PATCH", "/update-email").withBody(Json.toJson(agentEmail)))
-        status(result) shouldBe NOT_ACCEPTABLE
-      }
-    }
-
-    "return a bad request status" when {
-      "the received JsValue is not a valid agent email" in {
-        val result = controller.updateEmail().apply(FakeRequest().withBody(Json.toJson("" -> "")))
         status(result) shouldBe BAD_REQUEST
       }
     }
