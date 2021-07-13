@@ -5,6 +5,7 @@ import models.{AgentAddress, AgentCheck, AgentCorrespondence, ContactNumber}
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import models.AgentAddress
+import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json.{JsError, JsSuccess, JsValue}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
@@ -16,7 +17,7 @@ class ChangeAgentDetailsController @Inject()(
                                               repo: AgentDetailsRepo
                                             ) extends BaseController {
 
-  val readAgent: Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def readAgent(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[AgentCheck] match {
       case JsSuccess(x, _) => repo.getDetails(x.arn).map{
         case Some(agentDetails) => Ok(Json.toJson(agentDetails))

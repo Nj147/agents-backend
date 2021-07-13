@@ -18,6 +18,7 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
   val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
   val agentAddress: AgentAddress = AgentAddress("ARN0000001", "1 New Street", "AA1 2BB")
   val contact: ContactNumber = ContactNumber("ARN0000", "07986562663".toLong)
+  val agentEmail:AgentEmail = AgentEmail("ARN0000", "test@test.com")
   val agentCorrespondence: AgentCorrespondence = AgentCorrespondence("ARN0000", List("Text"))
 
   "/update-address" should {
@@ -119,4 +120,29 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
       }
     }
   }
+  "updateEmail;  /update-email" should {
+    "return an accepted status" when {
+      "the received JsValue is a valid agent email address and the update is successful" in {
+        when(repo.updateEmail(any())) thenReturn(Future.successful(true))
+        val result = controller.updateEmail().apply(FakeRequest("PATCH", "/update-email").withBody(Json.toJson(agentEmail)))
+        status(result) shouldBe ACCEPTED
+      }
+    }
+
+    "return an unacceptable status" when {
+      "the received JsValue is a valid agent email address but nothing in the database is updated" in {
+        when(repo.updateEmail(any())) thenReturn Future.successful(false)
+        val result = controller.updateEmail().apply(FakeRequest("PATCH", "/update-email").withBody(Json.toJson(agentEmail)))
+        status(result) shouldBe NOT_ACCEPTABLE
+      }
+    }
+
+    "return a bad request status" when {
+      "the received JsValue is not a valid agent email" in {
+        val result = controller.updateEmail().apply(FakeRequest().withBody(Json.toJson("" -> "")))
+        status(result) shouldBe BAD_REQUEST
+      }
+    }
+  }
+
 }
