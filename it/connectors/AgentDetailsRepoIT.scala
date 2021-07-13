@@ -32,13 +32,23 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
   }
 
-  "UpdateEmail" should {
-    "returns true if the email updated" in {
+  "UpdateContactNumber" should {
+    "returns true if the contact number updated" in {
       await(repository.createAgent(agent: AgentDetails))
-      await(repository.updateEmail(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe true
+      await(repository.updateContactNumber(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe true
     }
-    "returns false if the email is not updated" in {
-      await(repository.updateEmail(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe false
+    "returns false if the contact number is not updated" in {
+      await(repository.updateContactNumber(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe false
+    }
+  }
+
+  "UpdateCorrespondence" should {
+    "returns true if the correspondence has been updated" in {
+      await(repository.createAgent(agent: AgentDetails))
+      await(repository.updateCorrespondence(UpdateCorrespondence("ARN00000", List("call")))) shouldBe true
+    }
+    "returns false if the correspondence has not been updated" in {
+      await(repository.updateCorrespondence(UpdateCorrespondence("ARN00000", List("call")))) shouldBe false
     }
   }
 
