@@ -12,6 +12,8 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
   val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
   val agentAddress: AgentAddress = AgentAddress("ARN00000", "1 New Street", "AA1 2BB")
 
+  val agentAddress = AgentAddress("ARN00000", "1 New Street", "AA1 2BB")
+
   "createAgent" should {
     "return true when agent details are inserted in the db" in {
       await(repository.createAgent(agent: AgentDetails)) shouldBe true

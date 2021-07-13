@@ -32,9 +32,11 @@ class AgentDetailsRepo @Inject() (mongoComponent: MongoComponent) extends PlayMo
         case _ => false
       }
     }
+
   def updateAddress(agent: AgentAddress) = collection.updateOne(equal("arn", agent.arn), combine(set("propertyNumber", agent.propertyNumber),set("postcode", agent.postcode))).toFuture().map{ response =>
     response.getModifiedCount match{
-      case 1 => true case 0 => false
+      case 1 => true
+      case 0 => false
     }
   }
 }
