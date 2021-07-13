@@ -42,19 +42,25 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
   }
 
   "updateContactNumber" should {
-    "return 202 if the update is accepted" in {
-      when(repo.updateContactNumber(any())) thenReturn (Future.successful(true))
-      val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
-      status(result) shouldBe 202
+    "return 202" when {
+      "the update is accepted" in {
+        when(repo.updateContactNumber(any())) thenReturn (Future.successful(true))
+        val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
+        status(result) shouldBe 202
+      }
     }
-    "return 406 if the update is not accepted" in {
-      when(repo.updateContactNumber(any())) thenReturn (Future.successful(false))
-      val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
-      status(result) shouldBe 406
+    "return 406" when {
+      "the update is not accepted" in {
+        when(repo.updateContactNumber(any())) thenReturn (Future.successful(false))
+        val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
+        status(result) shouldBe 406
+      }
     }
-    "returns 400 BadRequest" in {
-      val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
-      status(result) shouldBe 400
+    "returns 400" when {
+      "valid json is not given" in {
+        val result = controller.updateContactNumber().apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
+        status(result) shouldBe 400
+      }
     }
   }
 
