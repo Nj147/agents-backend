@@ -30,6 +30,7 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
       }
     }
 
+
   def updateAddress(agent: AgentAddress): Future[Boolean] = collection.updateOne(equal("arn", agent.arn), combine(set("propertyNumber", agent.propertyNumber), set("postcode", agent.postcode))).toFuture().map { response =>
     response.getModifiedCount match {
       case 1 => true
@@ -42,6 +43,15 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
       _.getMatchedCount match {
         case 1 => true
         case _ => false
+      }
+    }
+
+
+  def updateEmail(agentEmail:AgentEmail):Future[Boolean] = collection.updateOne(equal("arn", agentEmail.arn), combine(set("email", agentEmail.email))).toFuture()
+    .map{
+      _.getModifiedCount match {
+        case 1 => true
+        case 0 => false
       }
     }
 }

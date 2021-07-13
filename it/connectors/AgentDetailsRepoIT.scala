@@ -11,6 +11,8 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
   val agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("test"), "testAddressLine1", "testPostcode")
   val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
   val agentAddress: AgentAddress = AgentAddress("ARN00000", "1 New Street", "AA1 2BB")
+  val agentEmail:AgentEmail = AgentEmail("ARN00000", "test@test.com")
+
 
   "createAgent" should {
     "return true when agent details are inserted in the db" in {
@@ -87,4 +89,31 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
 
   }
+  "AgentDetailRepo .updateEmail" should{
+    "return true and update values in the database" when {
+      "given an agentEmail with an existing arn" in {
+        await(repository.createAgent(agent))
+        await(repository.getDetails("ARN00000": String)).get.email shouldBe "testEmail"
+        await(repository.updateEmail(agentEmail)) shouldBe true
+        await(repository.getDetails("ARN00000": String)).get.email shouldBe "test@test.com"
+      }
+    }
+    "return false" when {
+      "no records in the database match the arn given" in {
+        await(repository.createAgent(agent))
+        await(repository.getDetails("ARN00000": String)).get.email shouldBe "testEmail"
+        await(repository.updateEmail(agentEmail.copy(arn = "invalidARN"))) shouldBe false
+
+      }
+      "the arn given matches but there is no change in email" in {
+        await(repository.createAgent(agent))
+        await(repository.updateEmail(agentEmail.copy(email = agent.email))) shouldBe false
+      }
+
+    }
+
+
+  }
+
+
 }
