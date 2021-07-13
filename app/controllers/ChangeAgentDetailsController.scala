@@ -20,7 +20,7 @@ class ChangeAgentDetailsController @Inject()(
 
   def readAgent(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     request.body.validate[AgentCheck] match {
-      case JsSuccess(x, _) => repo.getDetails(x.arn).map{
+      case JsSuccess(x, _) => repo.getDetails(x.arn).map {
         case Some(agentDetails) => Ok(Json.toJson(agentDetails))
         case _ => NotFound("Agent details not found!")
       }

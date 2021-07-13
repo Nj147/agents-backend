@@ -17,16 +17,13 @@ POST    /check-agent-login          controllers.AgentLoginController.checkAgentL
 POST    /readAgent                  controllers.ClientController.readAgent()
 
 +nocsrf
-POST    /get-agent-details          controllers.ChangeAgentDetailsController.readAgent
+POST    /get-agent-details          controllers.ChangeAgentDetailsController.readAgent()
 
 +nocsrf
-PATCH   /update-address             controllers.ChangeAgentDetailsController.updateAddress
+PATCH   /update-address             controllers.ChangeAgentDetailsController.updateAddress()
 
 +nocsrf
-PATCH   /update-contact-number        controllers.ChangeAgentDetailsController.updateContactNumber()
-
-+nocsrf
-PATCH   /update-email               controllers.ChangeAgentDetailsController.updateEmail()
+PATCH   /update-contact-number      controllers.ChangeAgentDetailsController.updateContactNumber()
 
 +nocsrf
 PATCH   /update-email               controllers.ChangeAgentDetailsController.updateEmail()

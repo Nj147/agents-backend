@@ -1,6 +1,6 @@
 package controllers
 
-import models.{AgentAddress, AgentCheck, AgentCorrespondence, AgentDetails, ContactNumber}
+import models.{AgentAddress, AgentCheck, AgentDetails, ContactNumber}
 import play.api.http.Status._
 import org.mockito.ArgumentMatchers.any
 import play.api.test.{FakeRequest, Helpers}
