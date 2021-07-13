@@ -1,12 +1,12 @@
 package controllers
 
-import models.ContactNumber
+import models.{AgentAddress, AgentCheck, AgentCorrespondence, ContactNumber}
+
 import scala.concurrent.ExecutionContext.Implicits.global
-import models.AgentAddress
-import models.AgentCheck
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
+
 import javax.inject.Inject
 import scala.concurrent.Future
 
@@ -38,6 +38,16 @@ class ChangeAgentDetailsController @Inject()(
   def updateAddress(): Action[JsValue] = Action.async(parse.json) {
     _.body.validate[AgentAddress] match {
       case JsSuccess(x, _) => repo.updateAddress(x).map {
+        case true => Accepted
+        case false => NotAcceptable
+      }
+      case JsError(_) => Future(BadRequest)
+    }
+  }
+
+  def updateCorrespondence(): Action[JsValue] = Action.async(parse.json) {
+    _.body.validate[AgentCorrespondence] match {
+      case JsSuccess(x, _) => repo.updateCorrespondence(x).map {
         case true => Accepted
         case false => NotAcceptable
       }
