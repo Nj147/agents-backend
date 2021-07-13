@@ -74,12 +74,17 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
   }
 
   "UpdateCorrespondence" should {
-    "returns true if the correspondence has been updated" in {
-      await(repository.createAgent(agent: AgentDetails))
-      await(repository.updateCorrespondence(UpdateCorrespondence("ARN00000", List("call")))) shouldBe true
+    "returns true" when {
+      "the correspondence has been updated" in {
+        await(repository.createAgent(agent: AgentDetails))
+        await(repository.updateCorrespondence(UpdateCorrespondence("ARN00000", List("call")))) shouldBe true
+        await(repository.getDetails("ARN00000")).get.moc shouldBe List("call")
+      }
     }
-    "returns false if the correspondence has not been updated" in {
-      await(repository.updateCorrespondence(UpdateCorrespondence("ARN00000", List("call")))) shouldBe false
+    "returns false" when {
+      "the correspondence has not been updated" in {
+        await(repository.updateCorrespondence(UpdateCorrespondence("ARN00000", List("call")))) shouldBe false
+      }
     }
 
   }
