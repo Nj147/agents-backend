@@ -25,5 +25,9 @@ class AgentDetailsRepo @Inject() (mongoComponent: MongoComponent) extends PlayMo
   //GetS all the details for the agent by specifying the ARN
   def getDetails(arn: String) : Future[Option[AgentDetails]] = collection.find(filter = Filters.eq("arn", arn)).first().toFutureOption()
 
-
+  def updateAddress(agent: AgentAddress) = collection.updateOne(equal("arn", agent.arn), combine(set("propertyNumber", agent.propertyNumber),set("postcode", agent.postcode))).toFuture().map{ response =>
+    response.getModifiedCount match{
+      case 1 => true case 0 => false
+    }
+  }
 }
