@@ -7,7 +7,6 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import repos.{AgentDetailsRepo, AgentLoginRepo}
-
 import scala.concurrent.Future
 
 class AgentLoginControllerSpec extends AbstractControllerTest {

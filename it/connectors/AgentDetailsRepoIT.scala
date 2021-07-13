@@ -33,7 +33,7 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
   }
 
-  "updateAddress" should{
+  "updateAddress" should {
     "return true and update values in the database" when {
       "given an agentAddress with an existing arn" in {
         await(repository.createAgent(agent))

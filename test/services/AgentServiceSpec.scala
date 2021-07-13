@@ -1,21 +1,17 @@
 package services
 
 import models.AgentLogin
-import org.mindrot.jbcrypt.BCrypt
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
-import play.api.test.Helpers.status
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repos.AgentLoginRepo
+import scala.concurrent.Future
 
-import scala.concurrent.{Await, Awaitable, Future}
-import scala.concurrent.duration.Duration
 
 class AgentServiceSpec extends AbstractServiceTest {
 
-  val repo = mock(classOf[AgentLoginRepo])
-  val agentLogin = AgentLogin("arnNo", "pa55w0rd")
-
-  def await[T](awaitable: Awaitable[T]): T = Await.result(awaitable, Duration.Inf)
+  val repo: AgentLoginRepo = mock(classOf[AgentLoginRepo])
+  val agentLogin: AgentLogin = AgentLogin("arnNo", "pa55w0rd")
 
   "checkAgentLogin" should {
     "return true when repo successfully checks agent login" in {

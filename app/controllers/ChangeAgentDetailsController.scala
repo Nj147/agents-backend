@@ -21,8 +21,7 @@ class ChangeAgentDetailsController @Inject()(val controllerComponents: Controlle
     }
   }
 
-
-  def updateAddress: Action[JsValue] = Action.async(parse.json) {
+  def updateAddress(): Action[JsValue] = Action.async(parse.json) {
     _.body.validate[AgentAddress] match {
       case JsSuccess(x, _) => repo.updateAddress(x).map {
         case true => Accepted
