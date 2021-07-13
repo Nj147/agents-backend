@@ -29,4 +29,12 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
         case _ => false
       }
     }
+
+  def updateCorrespondence(updateCorrespondence: UpdateCorrespondence): Future[Boolean] = collection.updateOne(equal("arn", updateCorrespondence.arn), combine(set("moc", updateCorrespondence.moc))).toFuture()
+    .map {
+      _.getMatchedCount match {
+        case 1 => true
+        case _ => false
+      }
+    }
 }
