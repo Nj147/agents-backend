@@ -15,3 +15,5 @@ POST    /check-agent-login          controllers.AgentLoginController.checkAgentL
 
 +nocsrf
 POST    /readAgent                  controllers.ClientController.readAgent()
+
+PATCH   /update-address             controllers.ChangeAgentDetailsController.updateAddress

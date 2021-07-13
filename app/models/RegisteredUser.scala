@@ -37,3 +37,9 @@ case class ContactNumber(arn: String, contactNumber: Long)
 object ContactNumber {
   implicit val format: OFormat[AgentCheck] = Json.format[AgentCheck]
 }
+
+case class AgentAddress(arn: String, propertyNumber: String, postcode: String)
+
+object AgentAddress {
+  implicit val format: OFormat[AgentAddress] = Json.format[AgentAddress]
+}
