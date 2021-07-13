@@ -32,6 +32,12 @@ object AgentCheck {
   implicit val format: OFormat[AgentCheck] = Json.format[AgentCheck]
 }
 
+case class AgentEmail(arn: String, email:String)
+
+object AgentEmail{
+  implicit val format: OFormat[AgentCheck]= Json.format[AgentCheck]
+}
+
 case class ContactNumber(arn: String, contactNumber: Long)
 
 object ContactNumber {
