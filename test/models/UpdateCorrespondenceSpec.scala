@@ -4,7 +4,7 @@ import play.api.libs.json.{JsSuccess, JsValue, Json}
 
 class UpdateCorrespondenceSpec extends AbstractModelsTest {
 
-  val updateCorrespondenceModel: UpdateCorrespondence = UpdateCorrespondence(arn = "ARN51226238", moc = List("test"))
+  val updateCorrespondenceModel: AgentCorrespondence = AgentCorrespondence(arn = "ARN51226238", moc = List("test"))
   val updateCorrespondenceJs: JsValue = Json.parse(
     """{
       |    "arn" : "ARN51226238",
@@ -18,7 +18,7 @@ class UpdateCorrespondenceSpec extends AbstractModelsTest {
       Json.toJson(updateCorrespondenceModel) shouldBe updateCorrespondenceJs
     }
     "format from json to case class" in {
-      Json.fromJson[UpdateCorrespondence](updateCorrespondenceJs) shouldBe JsSuccess(updateCorrespondenceModel)
+      Json.fromJson[AgentCorrespondence](updateCorrespondenceJs) shouldBe JsSuccess(updateCorrespondenceModel)
     }
   }
 
