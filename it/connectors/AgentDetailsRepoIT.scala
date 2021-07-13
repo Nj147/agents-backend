@@ -12,7 +12,6 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
   val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
   val agentAddress: AgentAddress = AgentAddress("ARN00000", "1 New Street", "AA1 2BB")
 
-
   "createAgent" should {
     "return true when agent details are inserted in the db" in {
       await(repository.createAgent(agent: AgentDetails)) shouldBe true
@@ -73,4 +72,19 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
   }
 
+  "UpdateCorrespondence" should {
+    "returns true" when {
+      "the correspondence has been updated" in {
+        await(repository.createAgent(agent: AgentDetails))
+        await(repository.updateCorrespondence(AgentCorrespondence("ARN00000", List("call")))) shouldBe true
+        await(repository.getDetails("ARN00000")).get.moc shouldBe List("call")
+      }
+    }
+    "returns false" when {
+      "the correspondence has not been updated" in {
+        await(repository.updateCorrespondence(AgentCorrespondence("ARN00000", List("call")))) shouldBe false
+      }
+    }
+
+  }
 }

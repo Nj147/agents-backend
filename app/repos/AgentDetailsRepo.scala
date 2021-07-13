@@ -18,10 +18,8 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
   indexes = Seq(IndexModel(ascending("arn"), IndexOptions().unique(true)))
 ) {
 
-  //Creates an document in the db which consists of agent details
   def createAgent(agent: AgentDetails): Future[Boolean] = collection.insertOne(agent).toFuture().map { _ => true }.recover { case _ => false }
 
-  //GetS all the details for the agent by specifying the ARN
   def getDetails(arn: String): Future[Option[AgentDetails]] = collection.find(filter = Filters.eq("arn", arn)).first().toFutureOption()
 
   def updateContactNumber(contactNumber: ContactNumber): Future[Boolean] = collection.updateOne(equal("arn", contactNumber.arn), combine(set("contactNumber", contactNumber.contactNumber))).toFuture()
@@ -38,4 +36,12 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
       case 0 => false
     }
   }
+
+  def updateCorrespondence(agentCorrespondence: AgentCorrespondence): Future[Boolean] = collection.updateOne(equal("arn", agentCorrespondence.arn), combine(set("moc", agentCorrespondence.moc))).toFuture()
+    .map {
+      _.getMatchedCount match {
+        case 1 => true
+        case _ => false
+      }
+    }
 }

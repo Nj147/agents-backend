@@ -23,4 +23,7 @@ POST    /get-agent-details          controllers.ChangeAgentDetailsController.rea
 PATCH   /update-address             controllers.ChangeAgentDetailsController.updateAddress
 
 +nocsrf
-PATCH   /update-contact-number        controllers.ChangeAgentDetailsController.updateContactNumber()
+PATCH   /update-contact-number      controllers.ChangeAgentDetailsController.updateContactNumber()
+
++nocsrf
+PATCH   /update-correspondence      controllers.ChangeAgentDetailsController.updateCorrespondence()

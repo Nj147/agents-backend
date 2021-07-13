@@ -1,6 +1,6 @@
 package controllers
 
-import models.{AgentAddress, AgentCheck, AgentDetails, ContactNumber}
+import models.{AgentAddress, AgentCheck, AgentCorrespondence, AgentDetails, ContactNumber}
 import play.api.http.Status._
 import org.mockito.ArgumentMatchers.any
 import play.api.test.{FakeRequest, Helpers}
@@ -18,6 +18,7 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
   val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
   val agentAddress: AgentAddress = AgentAddress("ARN0000001", "1 New Street", "AA1 2BB")
   val contact: ContactNumber = ContactNumber("ARN0000", "07986562663".toLong)
+  val agentCorrespondence: AgentCorrespondence = AgentCorrespondence("ARN0000", List("Text"))
 
   "/update-address" should {
     "return an accepted status" when {
@@ -91,6 +92,30 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
         when(repo.getDetails(any())) thenReturn Future.successful(Some(agentDetails))
         val result = controller.readAgent.apply(FakeRequest().withHeaders().withBody(Json.toJson(None)))
         status(result) shouldBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+
+  "/update-correspondence" should {
+    "return an accepted status" when {
+      "the received JsValue is a valid agent correspondence and the update is successful" in {
+        when(repo.updateCorrespondence(any())) thenReturn Future.successful(true)
+        val result = controller.updateCorrespondence().apply(FakeRequest("PATCH", "/update-correspondence").withBody(Json.toJson(agentCorrespondence)))
+        status(result) shouldBe ACCEPTED
+      }
+    }
+    "return an unacceptable status" when {
+      "the received JsValue is a valid agent correspondence but nothing in the database is updated" in {
+        when(repo.updateCorrespondence(any())) thenReturn Future.successful(false)
+        val result = controller.updateCorrespondence().apply(FakeRequest("PATCH", "/update-correspondence").withBody(Json.toJson(agentCorrespondence)))
+        status(result) shouldBe NOT_ACCEPTABLE
+      }
+    }
+    "return a bad request status" when {
+      "the received JsValue is not a valid agent correspondence" in {
+        val result = controller.updateCorrespondence().apply(FakeRequest().withBody(Json.toJson("" -> "")))
+        status(result) shouldBe BAD_REQUEST
       }
     }
   }
