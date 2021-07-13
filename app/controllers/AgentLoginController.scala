@@ -6,7 +6,6 @@ import javax.inject._
 import play.api.libs.json.{JsError, JsSuccess, JsValue}
 import play.api.mvc._
 import repos.AgentLoginRepo
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

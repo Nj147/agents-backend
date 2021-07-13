@@ -18,7 +18,7 @@ class ClientController @Inject()(val controllerComponents: ControllerComponents,
         case None => NotFound
       }
       case JsError(_) => Future(BadRequest)
-      }
     }
+  }
 
 }

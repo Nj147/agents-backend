@@ -31,15 +31,6 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     }
   }
 
-  "updateDetails" should {
-    "returns true if the details are added in db" in {
-      await(repository.createAgent(agent: AgentDetails))
-      await(repository.updateDetails(agent2: AgentDetails)) shouldBe true
-    }
-    "returns false if the details havent been updated" in {
-      await(repository.updateDetails(agent2.copy(arn = "a009"): AgentDetails)) shouldBe false
-    }
-  }
 
 
 }
