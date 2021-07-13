@@ -2,13 +2,15 @@ package controllers
 
 import models.ContactNumber
 import models.AgentAddress
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{mock, when}
 import play.api.http.Status._
+import org.mockito.ArgumentMatchers.any
+import play.api.test.{FakeRequest, Helpers}
+import org.mockito.Mockito.{mock, when}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
-import play.api.test.{FakeRequest, Helpers}
 import repos.AgentDetailsRepo
+import play.api.http.Status
+
 import scala.concurrent.Future
 
 class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
@@ -58,4 +60,33 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
     }
   }
 
+  val agentDetails = AgentDetails("ARN324234", "Business Ltd", "email@email.com", "0743534534".toLong, List("Text message"), "21", "SW12T54")
+  val agentCheck = AgentCheck("ARN324234")
+
+  "get-agent-details" should {
+    "return an OK status" when {
+      "a valid body is sent" in {
+        val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
+        when(repo.getDetails(any())) thenReturn Future.successful(Some(agentDetails))
+        val result = controller.readAgent.apply(FakeRequest().withHeaders().withBody(Json.toJson(agentCheck)))
+        status(result) shouldBe Status.OK
+      }
+    }
+    "return a NOT_FOUND status" when {
+      "no matching arn found" in {
+        val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
+        when(repo.getDetails(any())) thenReturn Future.successful(None)
+        val result = controller.readAgent.apply(FakeRequest().withHeaders().withBody(Json.toJson(agentCheck)))
+        status(result) shouldBe Status.NOT_FOUND
+      }
+    }
+    "return a BAD_REQUEST status" when {
+      "invalid json body sent" in {
+        val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
+        when(repo.getDetails(any())) thenReturn Future.successful(Some(agentDetails))
+        val result = controller.readAgent.apply(FakeRequest().withHeaders().withBody(Json.toJson(None)))
+        status(result) shouldBe Status.BAD_REQUEST
+      }
+    }
+  }
 }
