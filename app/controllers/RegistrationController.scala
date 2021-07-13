@@ -4,7 +4,6 @@ import models._
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 import services.RegistrationService
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
