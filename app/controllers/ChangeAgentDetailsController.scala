@@ -11,6 +11,7 @@ import play.api.mvc.{Action, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
 import javax.inject.Inject
 import scala.concurrent.Future
+import scala.concurrent.Future
 
 class ChangeAgentDetailsController @Inject()(
                                               val controllerComponents: ControllerComponents,
