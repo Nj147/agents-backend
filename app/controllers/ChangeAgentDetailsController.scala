@@ -1,16 +1,13 @@
 package controllers
 
-import models.{AgentAddress, AgentCheck, AgentCorrespondence, ContactNumber}
 
+import models.{AgentAddress, AgentEmail, AgentCheck, AgentCorrespondence, ContactNumber}
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import models.AgentAddress
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
-import play.api.libs.json.{JsError, JsSuccess, JsValue}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
 import javax.inject.Inject
-import scala.concurrent.Future
 import scala.concurrent.Future
 
 class ChangeAgentDetailsController @Inject()(
