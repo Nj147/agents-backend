@@ -44,4 +44,13 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
         case _ => false
       }
     }
+
+  def updateEmail(agentEmail:AgentEmail):Future[Boolean] = collection.updateOne(equal("arn", agentEmail.arn), combine(set("email", agentEmail.email))).toFuture()
+    .map{
+      _.getModifiedCount match {
+        case 1 => true
+        case 0 => false
+      }
+    }
+
 }
