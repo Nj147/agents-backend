@@ -6,16 +6,16 @@
 # An example controller showing a sample home page
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)
 +nocsrf
-POST    /agents/register             controllers.RegistrationController.registerAgent()
+POST    /agents/register                 controllers.RegistrationController.registerAgent()
 
 +nocsrf
-POST   /agents/:arn/login          controllers.AgentLoginController.checkAgentLogin(arn:String)
+POST    /agents/:arn/login               controllers.AgentLoginController.checkAgentLogin(arn:String)
 
-GET    /agents/:arn/restricted-details                 controllers.ClientController.readAgent(arn:String)
+GET     /agents/:arn/restricted-details  controllers.ClientController.readAgent(arn:String)
 
-GET    /agents/:arn/details          controllers.ChangeAgentDetailsController.readAgent(arn:String)
+GET     /agents/:arn/details             controllers.ChangeAgentDetailsController.readAgent(arn:String)
 
 +nocsrf
 PATCH   /agents/:arn/address             controllers.ChangeAgentDetailsController.updateAddress(arn:String)
@@ -24,7 +24,7 @@ PATCH   /agents/:arn/address             controllers.ChangeAgentDetailsControlle
 PATCH   /agents/:arn/contact-number      controllers.ChangeAgentDetailsController.updateContactNumber(arn:String)
 
 +nocsrf
-PATCH   /agents/:arn/email                 controllers.ChangeAgentDetailsController.updateEmail(arn:String)
+PATCH   /agents/:arn/email               controllers.ChangeAgentDetailsController.updateEmail(arn:String)
 
 +nocsrf
-PATCH   /agents/:arn/correspondence        controllers.ChangeAgentDetailsController.updateCorrespondence(arn:String)
+PATCH   /agents/:arn/correspondence      controllers.ChangeAgentDetailsController.updateCorrespondence(arn:String)

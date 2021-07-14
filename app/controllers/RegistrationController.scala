@@ -11,7 +11,7 @@ import scala.concurrent.Future
 class RegistrationController @Inject()(val controllerComponents: ControllerComponents, service: RegistrationService) extends BaseController {
 
   def registerAgent(): Action[JsValue] = Action.async(parse.json) {
-    _.body.validate[RegisteringUser] match {
+    _.body.validate[AgentRegister] match {
       case JsSuccess(x, _) => service.register(x).map {
         case Some(arn) =>
           Created(Json.parse(
