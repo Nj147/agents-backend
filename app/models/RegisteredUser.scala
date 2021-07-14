@@ -8,12 +8,6 @@ object AgentDetails {
   implicit val format: OFormat[AgentDetails] = Json.format[AgentDetails]
 }
 
-case class AgentLogin(arn: String, password: String)
-
-object AgentLogin {
-  implicit val format: OFormat[AgentLogin] = Json.format[AgentLogin]
-}
-
 case class RegisteringUser(password: String, businessName: String, email: String, contactNumber: Long, moc: List[String], propertyNumber: String, postcode: String)
 
 object RegisteringUser {
@@ -26,18 +20,6 @@ object AgentClientDetails {
   implicit val format: OFormat[AgentClientDetails] = Json.format[AgentClientDetails]
 }
 
-case class AgentCheck(arn: String)
-
-object AgentCheck {
-  implicit val format: OFormat[AgentCheck] = Json.format[AgentCheck]
-}
-
-case class AgentEmail(arn: String, email:String)
-
-object AgentEmail{
-  implicit val format: OFormat[AgentEmail]= Json.format[AgentEmail]
-
-}
 
 case class ContactNumber(arn: String, contactNumber: Long)
 
