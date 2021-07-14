@@ -15,8 +15,8 @@ class ClientServiceSpec extends AbstractServiceTest {
   val service = new ClientService(repo)
   val agent: AgentDetails = AgentDetails("ARN0001", "Big Business", "test@test.com", 123456789, List("gg"), "1 New Street", "A01 2BC")
   val response = Json.parse(s"""{
-                    | "businessName": "businessName",
-                    | "email": "testEmail"
+                    | "businessName": "Big Business",
+                    | "email": "test@test.com"
                     |}""".stripMargin)
 
   "readAgent" should {

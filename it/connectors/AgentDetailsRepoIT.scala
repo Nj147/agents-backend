@@ -10,8 +10,8 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
 
   val agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("test"), "testAddressLine1", "testPostcode")
   val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
-  val agentAddress: AgentAddress = AgentAddress("ARN00000", "1 New Street", "AA1 2BB")
-  val agentEmail:AgentEmail = AgentEmail("ARN00000", "test@test.com")
+  val agentAddress: Address = Address( "1 New Street", "AA1 2BB")
+  val agentEmail = ( "test@test.com")
 
 
   "createAgent" should {

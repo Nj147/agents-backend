@@ -29,9 +29,9 @@ class ClientControllerSpec extends AbstractControllerTest {
       val result = controller.readAgent(arn="ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("arn" -> "ARN0001")))
       status(result) shouldBe 404
     }
-    "return BadRequest if json body sent isn't valid" in {
-      val result = controller.readAgent(arn="ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("firstValue" -> "ARN0001", "secondValue" -> "random")))
-      status(result) shouldBe 400
-    }
+//    "return BadRequest if json body sent isn't valid" in {
+//      val result = controller.readAgent(arn="ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("firstValue" -> "ARN0001", "secondValue" -> "random")))
+//      status(result) shouldBe 400
+//    }
   }
 }
