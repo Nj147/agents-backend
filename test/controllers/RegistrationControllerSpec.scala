@@ -1,18 +1,20 @@
 package controllers
 
-import models.RegisteringUser
+
+import models.AgentRegister
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import services.RegistrationService
+
 import scala.concurrent.Future
 
 class RegistrationControllerSpec extends AbstractControllerTest {
   val service: RegistrationService = mock(classOf[RegistrationService])
   val controller = new RegistrationController(Helpers.stubControllerComponents(), service)
-  val obj: RegisteringUser = RegisteringUser("password", "business", "email", 1234, List("gg"), "addressline1", "postcode")
+  val obj = AgentRegister("password", "business", "email", "1234".toLong, List("gg"), "addressline1", "postcode")
 
   "registerAgent" should {
     "return 201 Created" in {
