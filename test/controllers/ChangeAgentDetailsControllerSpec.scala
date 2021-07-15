@@ -8,7 +8,6 @@ import org.mockito.Mockito.{mock, when}
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import repos.AgentDetailsRepo
-import play.api.http.Status
 import scala.concurrent.Future
 
 class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
@@ -23,53 +22,7 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
   val agentDetails: AgentDetails = AgentDetails("ARN324234", "Business Ltd", "email@email.com", "0743534534".toLong, List("Text message"), "21", "SW12T54")
   val agentCheck = ("ARN324234")
 
-  "/address" should {
-    "return an accepted status" when {
-      "the received JsValue is a valid agent address and the update is successful" in {
-        when(repo.updateAddress(any(), any())) thenReturn Future.successful(true)
-        val result = controller.updateAddress(arn = "ARN0000001").apply(FakeRequest("PATCH", "/update-address").withBody(Json.toJson(agentAddress)))
-        status(result) shouldBe ACCEPTED
-      }
-    }
-    "return an unacceptable status" when {
-      "the received JsValue is a valid agent address but nothing in the database is updated" in {
-        when(repo.updateAddress(any(), any())) thenReturn Future.successful(false)
-        val result = controller.updateAddress(arn = "ARN0000001").apply(FakeRequest("PATCH", "/update-address").withBody(Json.toJson(agentAddress)))
-        status(result) shouldBe NOT_ACCEPTABLE
-      }
-    }
-    "return a bad request status" when {
-      "the received JsValue is not a valid agent address" in {
-        val result = controller.updateAddress(arn = "ARN0001").apply(FakeRequest().withBody(Json.toJson("" -> "")))
-        status(result) shouldBe BAD_REQUEST
-      }
-    }
-  }
-
-  "/contact-number" should {
-    "return accepted" when {
-      "the update is successful" in {
-        when(repo.updateContactNumber(any(), any())) thenReturn (Future.successful(true))
-        val result = controller.updateContactNumber(arn = "ARN0001").apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
-        status(result) shouldBe ACCEPTED
-      }
-    }
-    "return not acceptable" when {
-      "the update is unsuccessful" in {
-        when(repo.updateContactNumber(any(), any())) thenReturn (Future.successful(false))
-        val result = controller.updateContactNumber(arn = "ARN0001").apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
-        status(result) shouldBe NOT_ACCEPTABLE
-      }
-    }
-    "return badrequest" when {
-      "valid json is not given" in {
-        val result = controller.updateContactNumber(arn = "ARN0001").apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
-        status(result) shouldBe BAD_REQUEST
-      }
-    }
-  }
-
-  "details" should {
+  "GET /details" should {
     "return an OK status" when {
       "a valid body is sent" in {
         val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
@@ -83,54 +36,99 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
         val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
         when(repo.getDetails(any())) thenReturn Future.successful(None)
         val result = controller.readAgent(arn = "ARN324234").apply(FakeRequest().withHeaders().withBody(Json.toJson(agentCheck)))
-        status(result) shouldBe NOT_FOUND
+        status(result) shouldBe INTERNAL_SERVER_ERROR
       }
     }
   }
 
-
-  "/correspondence" should {
-    "return an accepted status" when {
-      "the received JsValue is a valid agent correspondence and the update is successful" in {
-        when(repo.updateCorrespondence(any(), any())) thenReturn Future.successful(true)
-        val result = controller.updateCorrespondence(arn = "ARN0001").apply(FakeRequest("PATCH", "/update-correspondence").withBody(Json.toJson(agentCorrespondence)))
-        status(result) shouldBe ACCEPTED
-      }
-    }
-    "return an unacceptable status" when {
-      "the received JsValue is a valid agent correspondence but nothing in the database is updated" in {
-        when(repo.updateCorrespondence(any(), any())) thenReturn Future.successful(false)
-        val result = controller.updateCorrespondence(arn = "ARN0001").apply(FakeRequest("PATCH", "/update-correspondence").withBody(Json.toJson(agentCorrespondence)))
-        status(result) shouldBe NOT_ACCEPTABLE
-      }
-    }
-    "return a bad request status" when {
-      "the received JsValue is not a valid agent correspondence" in {
-        val result = controller.updateCorrespondence(arn = "ARN0001").apply(FakeRequest().withBody(Json.toJson("" -> "")))
-        status(result) shouldBe BAD_REQUEST
-      }
-    }
-  }
-
-  "/email" should {
+  "PATCH /email" should {
     "return an accepted status" when {
       "the received JsValue is a valid agent email address and the update is successful" in {
         when(repo.updateEmail(any(), any())) thenReturn (Future.successful(true))
         val result = controller.updateEmail(arn = "ARN0001").apply(FakeRequest("PATCH", "/update-email").withBody(Json.toJson(agentEmail)))
-        status(result) shouldBe ACCEPTED
+        status(result) shouldBe OK
       }
     }
     "return an unacceptable status" when {
       "the received JsValue is a valid agent email address but nothing in the database is updated" in {
         when(repo.updateEmail(any(), any())) thenReturn Future.successful(false)
         val result = controller.updateEmail(arn = "ARN0001").apply(FakeRequest("PATCH", "/update-email").withBody(Json.toJson(agentEmail)))
-        status(result) shouldBe NOT_ACCEPTABLE
+        status(result) shouldBe BAD_REQUEST
       }
     }
     "return a bad request status" when {
       "the received JsValue is not a valid agent email" in {
         val result = controller.updateEmail(arn = "ARN0001").apply(FakeRequest().withBody(Json.toJson("" -> "")))
+        status(result) shouldBe INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "/contact-number" should {
+    "return accepted" when {
+      "the update is successful" in {
+        when(repo.updateContactNumber(any(), any())) thenReturn (Future.successful(true))
+        val result = controller.updateContactNumber(arn = "ARN0001").apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
+        status(result) shouldBe OK
+      }
+    }
+    "return not acceptable" when {
+      "the update is unsuccessful" in {
+        when(repo.updateContactNumber(any(), any())) thenReturn (Future.successful(false))
+        val result = controller.updateContactNumber(arn = "ARN0001").apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson(contact)))
         status(result) shouldBe BAD_REQUEST
+      }
+    }
+    "return badrequest" when {
+      "valid json is not given" in {
+        val result = controller.updateContactNumber(arn = "ARN0001").apply(FakeRequest("PATCH", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
+        status(result) shouldBe INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "PATCH /address" should {
+    "return an accepted status" when {
+      "the received JsValue is a valid agent address and the update is successful" in {
+        when(repo.updateAddress(any(), any())) thenReturn Future.successful(true)
+        val result = controller.updateAddress(arn = "ARN0000001").apply(FakeRequest("PATCH", "/update-address").withBody(Json.toJson(agentAddress)))
+        status(result) shouldBe OK
+      }
+    }
+    "return an unacceptable status" when {
+      "the received JsValue is a valid agent address but nothing in the database is updated" in {
+        when(repo.updateAddress(any(), any())) thenReturn Future.successful(false)
+        val result = controller.updateAddress(arn = "ARN0000001").apply(FakeRequest("PATCH", "/update-address").withBody(Json.toJson(agentAddress)))
+        status(result) shouldBe BAD_REQUEST
+      }
+    }
+    "return a bad request status" when {
+      "the received JsValue is not a valid agent address" in {
+        val result = controller.updateAddress(arn = "ARN0001").apply(FakeRequest().withBody(Json.toJson("" -> "")))
+        status(result) shouldBe INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "/correspondence" should {
+    "return an accepted status" when {
+      "the received JsValue is a valid agent correspondence and the update is successful" in {
+        when(repo.updateCorrespondence(any(), any())) thenReturn Future.successful(true)
+        val result = controller.updateCorrespondence(arn = "ARN0001").apply(FakeRequest("PATCH", "/update-correspondence").withBody(Json.toJson(agentCorrespondence)))
+        status(result) shouldBe OK
+      }
+    }
+    "return an unacceptable status" when {
+      "the received JsValue is a valid agent correspondence but nothing in the database is updated" in {
+        when(repo.updateCorrespondence(any(), any())) thenReturn Future.successful(false)
+        val result = controller.updateCorrespondence(arn = "ARN0001").apply(FakeRequest("PATCH", "/update-correspondence").withBody(Json.toJson(agentCorrespondence)))
+        status(result) shouldBe BAD_REQUEST
+      }
+    }
+    "return a bad request status" when {
+      "the received JsValue is not a valid agent correspondence" in {
+        val result = controller.updateCorrespondence(arn = "ARN0001").apply(FakeRequest().withBody(Json.toJson("" -> "")))
+        status(result) shouldBe INTERNAL_SERVER_ERROR
       }
     }
   }

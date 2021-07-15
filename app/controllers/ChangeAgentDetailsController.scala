@@ -18,7 +18,7 @@ class ChangeAgentDetailsController @Inject()(
   def readAgent(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     repo.getDetails(arn).map {
       case Some(details) => Ok(Json.toJson(details))
-      case None => NotFound
+      case None => InternalServerError
     }
   }
 
@@ -27,10 +27,10 @@ class ChangeAgentDetailsController @Inject()(
       (request.body \ "email").as[String]
     } match {
       case Success(json) => repo.updateEmail(arn, json).map {
-        case true => Accepted
-        case false => NotAcceptable
+        case true => Ok
+        case false => BadRequest
       }
-      case Failure(_) => Future.successful(BadRequest)
+      case Failure(_) => Future.successful(InternalServerError)
     }
   }
 
@@ -39,20 +39,20 @@ class ChangeAgentDetailsController @Inject()(
       (request.body \ "contactNumber").as[Long]
     } match {
       case Success(json) => repo.updateContactNumber(arn, json).map {
-        case true => Accepted
-        case false => NotAcceptable
+        case true => Ok
+        case false => BadRequest
       }
-      case Failure(_) => Future.successful(BadRequest)
+      case Failure(_) => Future.successful(InternalServerError)
     }
   }
 
   def updateAddress(arn: String): Action[JsValue] = Action.async(parse.json) {
     _.body.validate[Address] match {
       case JsSuccess(address, _) => repo.updateAddress(arn, address).map {
-        case true => Accepted
-        case false => NotAcceptable
+        case true => Ok
+        case false => BadRequest
       }
-      case JsError(_) => Future(BadRequest)
+      case JsError(_) => Future(InternalServerError)
     }
   }
 
@@ -61,10 +61,10 @@ class ChangeAgentDetailsController @Inject()(
       (request.body \ "moc").as[List[String]]
     } match {
       case Success(json) => repo.updateCorrespondence(arn, json).map {
-        case true => Accepted
-        case false => NotAcceptable
+        case true => Ok
+        case false => BadRequest
       }
-      case Failure(_) => Future.successful(BadRequest)
+      case Failure(_) => Future.successful(InternalServerError)
     }
   }
 }
