@@ -1,11 +1,13 @@
 package controllers
 
 import models.Address
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
-import play.api.mvc.{Action, BaseController, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
+
 import javax.inject.Inject
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
@@ -15,7 +17,7 @@ class ChangeAgentDetailsController @Inject()(
                                               repo: AgentDetailsRepo
                                             ) extends BaseController {
 
-  def readAgent(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def readAgent(arn: String): Action[AnyContent] = Action.async { implicit request =>
     repo.getDetails(arn).map {
       case Some(details) => Ok(Json.toJson(details))
       case None => InternalServerError
