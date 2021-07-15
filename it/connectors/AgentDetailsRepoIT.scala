@@ -10,8 +10,8 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
 
   val agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("test"), "testAddressLine1", "testPostcode")
   val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
-  val agentAddress: AgentAddress = AgentAddress("ARN00000", "1 New Street", "AA1 2BB")
-  val agentEmail:AgentEmail = AgentEmail("ARN00000", "test@test.com")
+  val agentAddress: Address = Address("1 New Street", "AA1 2BB")
+  val agentEmail = "test@test.com"
 
 
   "createAgent" should {
@@ -40,7 +40,7 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
         await(repository.createAgent(agent))
         await(repository.getDetails("ARN00000": String)).get.propertyNumber shouldBe "testAddressLine1"
         await(repository.getDetails("ARN00000": String)).get.postcode shouldBe "testPostcode"
-        await(repository.updateAddress(agentAddress)) shouldBe true
+        await(repository.updateAddress("ARN00000", agentAddress)) shouldBe true
         await(repository.getDetails("ARN00000": String)).get.propertyNumber shouldBe "1 New Street"
         await(repository.getDetails("ARN00000": String)).get.postcode shouldBe "AA1 2BB"
       }
@@ -50,11 +50,11 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
         await(repository.createAgent(agent))
         await(repository.getDetails("ARN00000": String)).get.propertyNumber shouldBe "testAddressLine1"
         await(repository.getDetails("ARN00000": String)).get.postcode shouldBe "testPostcode"
-        await(repository.updateAddress(agentAddress.copy(arn = "invalidARN"))) shouldBe false
+        await(repository.updateAddress("invalidARN", agentAddress)) shouldBe false
       }
       "the arn given matches but there are no differences in the postcode and property number" in {
         await(repository.createAgent(agent))
-        await(repository.updateAddress(agentAddress.copy(propertyNumber = agent.propertyNumber, postcode = agent.postcode))) shouldBe false
+        await(repository.updateAddress("ARN00000", agentAddress)) shouldBe true
       }
     }
   }
@@ -63,13 +63,13 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     "return true" when {
       "the contact number has been updated" in {
         await(repository.createAgent(agent: AgentDetails))
-        await(repository.updateContactNumber(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe true
+        await(repository.updateContactNumber("ARN00000", "079865626663".toLong)) shouldBe true
         await(repository.getDetails("ARN00000": String)).get.contactNumber shouldBe "79865626663".toLong
       }
     }
     "returns false " when {
       "the contact number is not updated" in {
-        await(repository.updateContactNumber(ContactNumber("ARN00000", "079865626663".toLong))) shouldBe false
+        await(repository.updateContactNumber("ARN00000", "079865626663".toLong)) shouldBe false
       }
     }
   }
@@ -78,23 +78,23 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     "returns true" when {
       "the correspondence has been updated" in {
         await(repository.createAgent(agent: AgentDetails))
-        await(repository.updateCorrespondence(AgentCorrespondence("ARN00000", List("call")))) shouldBe true
+        await(repository.updateCorrespondence("ARN00000", List("call"))) shouldBe true
         await(repository.getDetails("ARN00000")).get.moc shouldBe List("call")
       }
     }
     "returns false" when {
       "the correspondence has not been updated" in {
-        await(repository.updateCorrespondence(AgentCorrespondence("ARN00000", List("call")))) shouldBe false
+        await(repository.updateCorrespondence("ARN00000", List("call"))) shouldBe false
       }
     }
 
   }
-  "AgentDetailRepo .updateEmail" should{
+  "AgentDetailRepo .updateEmail" should {
     "return true and update values in the database" when {
       "given an agentEmail with an existing arn" in {
         await(repository.createAgent(agent))
         await(repository.getDetails("ARN00000": String)).get.email shouldBe "testEmail"
-        await(repository.updateEmail(agentEmail)) shouldBe true
+        await(repository.updateEmail("ARN00000", agentEmail)) shouldBe true
         await(repository.getDetails("ARN00000": String)).get.email shouldBe "test@test.com"
       }
     }
@@ -102,18 +102,13 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
       "no records in the database match the arn given" in {
         await(repository.createAgent(agent))
         await(repository.getDetails("ARN00000": String)).get.email shouldBe "testEmail"
-        await(repository.updateEmail(agentEmail.copy(arn = "invalidARN"))) shouldBe false
+        await(repository.updateEmail("invalidARN", agentEmail)) shouldBe false
 
       }
       "the arn given matches but there is no change in email" in {
         await(repository.createAgent(agent))
-        await(repository.updateEmail(agentEmail.copy(email = agent.email))) shouldBe false
+        await(repository.updateEmail("ARN00000", agentEmail)) shouldBe true
       }
-
     }
-
-
   }
-
-
 }

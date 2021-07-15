@@ -22,7 +22,7 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
 
   def getDetails(arn: String): Future[Option[AgentDetails]] = collection.find(filter = Filters.eq("arn", arn)).first().toFutureOption()
 
-  def updateContactNumber(contactNumber: ContactNumber): Future[Boolean] = collection.updateOne(equal("arn", contactNumber.arn), combine(set("contactNumber", contactNumber.contactNumber))).toFuture()
+  def updateContactNumber(arn: String, contactNumber: Long): Future[Boolean] = collection.updateOne(equal("arn", arn), combine(set("contactNumber", contactNumber))).toFuture()
     .map {
       _.getMatchedCount match {
         case 1 => true
@@ -30,15 +30,14 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
       }
     }
 
-
-  def updateAddress(agent: AgentAddress): Future[Boolean] = collection.updateOne(equal("arn", agent.arn), combine(set("propertyNumber", agent.propertyNumber), set("postcode", agent.postcode))).toFuture().map { response =>
-    response.getModifiedCount match {
+  def updateAddress(arn: String, address: Address): Future[Boolean] = collection.updateOne(equal("arn", arn), combine(set("propertyNumber", address.propertyNumber), set("postcode", address.postcode))).toFuture().map { response =>
+    response.getMatchedCount match {
       case 1 => true
       case 0 => false
     }
   }
 
-  def updateCorrespondence(agentCorrespondence: AgentCorrespondence): Future[Boolean] = collection.updateOne(equal("arn", agentCorrespondence.arn), combine(set("moc", agentCorrespondence.moc))).toFuture()
+  def updateCorrespondence(arn: String, moc: List[String]): Future[Boolean] = collection.updateOne(equal("arn", arn), combine(set("moc", moc))).toFuture()
     .map {
       _.getMatchedCount match {
         case 1 => true
@@ -46,10 +45,9 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
       }
     }
 
-
-  def updateEmail(agentEmail:AgentEmail):Future[Boolean] = collection.updateOne(equal("arn", agentEmail.arn), combine(set("email", agentEmail.email))).toFuture()
+  def updateEmail(arn: String, email: String):Future[Boolean] = collection.updateOne(equal("arn", arn), combine(set("email", email))).toFuture()
     .map{
-      _.getModifiedCount match {
+      _.getMatchedCount match {
         case 1 => true
         case 0 => false
       }

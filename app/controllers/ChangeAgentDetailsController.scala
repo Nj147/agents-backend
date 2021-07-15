@@ -1,7 +1,6 @@
 package controllers
 
-
-import models.{AgentAddress, AgentEmail, AgentCheck, AgentCorrespondence, ContactNumber}
+import models.Address
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
@@ -9,25 +8,47 @@ import play.api.mvc.{Action, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
 import javax.inject.Inject
 import scala.concurrent.Future
+import scala.util.{Failure, Success, Try}
 
 class ChangeAgentDetailsController @Inject()(
                                               val controllerComponents: ControllerComponents,
                                               repo: AgentDetailsRepo
                                             ) extends BaseController {
 
-  def readAgent(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    request.body.validate[AgentCheck] match {
-      case JsSuccess(x, _) => repo.getDetails(x.arn).map {
-        case Some(agentDetails) => Ok(Json.toJson(agentDetails))
-        case _ => NotFound("Agent details not found!")
-      }
-      case JsError(errors) => Future(BadRequest(s"JsError: $errors"))
+  def readAgent(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    repo.getDetails(arn).map {
+      case Some(details) => Ok(Json.toJson(details))
+      case None => NotFound
     }
   }
 
-  def updateEmail(): Action[JsValue] = Action.async(parse.json) {
-    _.body.validate[AgentEmail] match {
-      case JsSuccess(e, _) => repo.updateEmail(e).map {
+  def updateEmail(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    Try {
+      (request.body \ "email").as[String]
+    } match {
+      case Success(json) => repo.updateEmail(arn, json).map {
+        case true => Accepted
+        case false => NotAcceptable
+      }
+      case Failure(_) => Future.successful(BadRequest)
+    }
+  }
+
+  def updateContactNumber(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    Try {
+      (request.body \ "contactNumber").as[Long]
+    } match {
+      case Success(json) => repo.updateContactNumber(arn, json).map {
+        case true => Accepted
+        case false => NotAcceptable
+      }
+      case Failure(_) => Future.successful(BadRequest)
+    }
+  }
+
+  def updateAddress(arn: String): Action[JsValue] = Action.async(parse.json) {
+    _.body.validate[Address] match {
+      case JsSuccess(address, _) => repo.updateAddress(arn, address).map {
         case true => Accepted
         case false => NotAcceptable
       }
@@ -35,33 +56,15 @@ class ChangeAgentDetailsController @Inject()(
     }
   }
 
-  def updateContactNumber(): Action[JsValue] = Action.async(parse.json) {
-    _.body.validate[ContactNumber] match {
-      case JsSuccess(x, _) => repo.updateContactNumber(x).map {
+  def updateCorrespondence(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    Try {
+      (request.body \ "moc").as[List[String]]
+    } match {
+      case Success(json) => repo.updateCorrespondence(arn, json).map {
         case true => Accepted
         case false => NotAcceptable
       }
-      case JsError(_) => Future(BadRequest)
-    }
-  }
-
-  def updateAddress(): Action[JsValue] = Action.async(parse.json) {
-    _.body.validate[AgentAddress] match {
-      case JsSuccess(x, _) => repo.updateAddress(x).map {
-        case true => Accepted
-        case false => NotAcceptable
-      }
-      case JsError(_) => Future(BadRequest)
-    }
-  }
-
-  def updateCorrespondence(): Action[JsValue] = Action.async(parse.json) {
-    _.body.validate[AgentCorrespondence] match {
-      case JsSuccess(x, _) => repo.updateCorrespondence(x).map {
-        case true => Accepted
-        case false => NotAcceptable
-      }
-      case JsError(_) => Future(BadRequest)
+      case Failure(_) => Future.successful(BadRequest)
     }
   }
 }

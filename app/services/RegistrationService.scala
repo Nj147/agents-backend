@@ -1,6 +1,6 @@
 package services
 
-import models.{AgentDetails, AgentLogin, RegisteringUser}
+import models.{AgentDetails, AgentLogin, AgentRegister}
 import org.mindrot.jbcrypt.BCrypt
 import repos.{AgentDetailsRepo, AgentLoginRepo}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 class RegistrationService @Inject()(agentDetailsRepo: AgentDetailsRepo, agentLoginRepo: AgentLoginRepo) {
 
-  def register(agent: RegisteringUser): Future[Option[String]] = {
+  def register(agent: AgentRegister): Future[Option[String]] = {
     val arn = createARN()
     for {
       createAgent <- agentDetailsRepo.createAgent(AgentDetails(arn, agent.businessName, agent.email, agent.contactNumber, agent.moc, agent.propertyNumber, agent.postcode))
