@@ -18,7 +18,7 @@ class AgentLoginController @Inject()(val controllerComponents: ControllerCompone
     } match {
       case Success(json) => repo.checkAgent(arn, json).map {
         case true => Ok
-        case false => NotFound
+        case false => Unauthorized
       }
       case Failure(_) => Future.successful(BadRequest)
     }

@@ -29,7 +29,7 @@ class AgentLoginControllerSpec extends AbstractControllerTest {
       "status when checkAgentLogin is unsuccessful" in {
         when(repo.checkAgent(any(), any())) thenReturn Future.successful(false)
         val result = controller.checkAgentLogin(arn = "ARN001").apply(FakeRequest().withHeaders().withBody(Json.toJson(agentLogin)))
-        status(result) shouldBe NOT_FOUND
+        status(result) shouldBe UNAUTHORIZED
       }
     }
     "return bad request" when {

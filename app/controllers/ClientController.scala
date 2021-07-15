@@ -11,7 +11,7 @@ class ClientController @Inject()(val controllerComponents: ControllerComponents,
   def readAgent(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     service.readAgent(arn).map {
       case Some(jsValue) => Ok(Json.toJson(jsValue))
-      case None => NotFound
+      case None => InternalServerError
     }
   }
 }

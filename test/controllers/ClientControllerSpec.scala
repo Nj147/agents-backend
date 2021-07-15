@@ -16,17 +16,17 @@ class ClientControllerSpec extends AbstractControllerTest {
 
   "GET /restricted-details" should {
     "return OK" when {
-      "if agent exists" in {
+      "agent exists" in {
         when(service.readAgent(any())) thenReturn Future.successful(agent)
         val result = controller.readAgent(arn = "ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("arn" -> "ARN0001")))
         status(result) shouldBe OK
       }
     }
     "return not found" when {
-      "if agent doesn't exist" in {
+      "agent doesn't exist" in {
         when(service.readAgent(any())) thenReturn Future.successful(None)
         val result = controller.readAgent(arn = "ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("arn" -> "ARN0001")))
-        status(result) shouldBe NOT_FOUND
+        status(result) shouldBe INTERNAL_SERVER_ERROR
       }
     }
   }
