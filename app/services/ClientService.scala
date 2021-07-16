@@ -11,11 +11,7 @@ class ClientService @Inject()(repo: AgentDetailsRepo) {
 
   def readAgent(arn: String): Future[Option[JsValue]] = {
     repo.getDetails(arn).map {
-      case Some(agent) => Some(Json.parse(
-        s"""{
-          | "businessName": "${agent.businessName}",
-          | "email": "${agent.email}"
-          |}""".stripMargin))
+      case Some(agent) => Some(Json.obj("businessName" -> agent.businessName, "email" -> agent.email))
       case None => None
     }
   }
