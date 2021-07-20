@@ -25,17 +25,15 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
   "GET /details" should {
     "return an OK status" when {
       "a valid body is sent" in {
-        val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
         when(repo.getDetails(any())) thenReturn Future.successful(Some(agentDetails))
-        val result = controller.readAgent(arn = "ARN324234").apply(FakeRequest().withHeaders().withBody(Json.toJson(agentCheck)))
+        val result = controller.readAgent(arn = "ARN324234").apply(FakeRequest())
         status(result) shouldBe OK
       }
     }
     "return a NOT_FOUND status" when {
       "no matching arn found" in {
-        val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
         when(repo.getDetails(any())) thenReturn Future.successful(None)
-        val result = controller.readAgent(arn = "ARN324234").apply(FakeRequest().withHeaders().withBody(Json.toJson(agentCheck)))
+        val result = controller.readAgent(arn = "ARN324234").apply(FakeRequest())
         status(result) shouldBe INTERNAL_SERVER_ERROR
       }
     }

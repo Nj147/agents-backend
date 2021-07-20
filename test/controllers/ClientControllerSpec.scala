@@ -18,14 +18,14 @@ class ClientControllerSpec extends AbstractControllerTest {
     "return OK" when {
       "agent exists" in {
         when(service.readAgent(any())) thenReturn Future.successful(agent)
-        val result = controller.readAgent(arn = "ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("arn" -> "ARN0001")))
+        val result = controller.readAgent(arn = "ARN0001").apply(FakeRequest("GET", "/readAgent"))
         status(result) shouldBe OK
       }
     }
     "return not found" when {
       "agent doesn't exist" in {
         when(service.readAgent(any())) thenReturn Future.successful(None)
-        val result = controller.readAgent(arn = "ARN0001").apply(FakeRequest("POST", "/readAgent").withBody(Json.obj("arn" -> "ARN0001")))
+        val result = controller.readAgent(arn = "ARN0001").apply(FakeRequest("GET", "/readAgent"))
         status(result) shouldBe INTERNAL_SERVER_ERROR
       }
     }
