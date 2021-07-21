@@ -7,7 +7,6 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 import repos.AgentDetailsRepo
-
 import javax.inject.Inject
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
@@ -38,7 +37,7 @@ class ChangeAgentDetailsController @Inject()(
 
   def updateContactNumber(arn: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     Try {
-      (request.body \ "contactNumber").as[Long]
+      (request.body \ "contactNumber").as[String]
     } match {
       case Success(json) => repo.updateContactNumber(arn, json).map {
         case true => Ok

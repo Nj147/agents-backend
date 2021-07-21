@@ -8,13 +8,12 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import services.RegistrationService
-
 import scala.concurrent.Future
 
 class RegistrationControllerSpec extends AbstractControllerTest {
   val service: RegistrationService = mock(classOf[RegistrationService])
   val controller = new RegistrationController(Helpers.stubControllerComponents(), service)
-  val obj: AgentRegister = AgentRegister("password", "business", "email", "1234".toLong, List("gg"), "addressline1", "postcode")
+  val obj: AgentRegister = AgentRegister("password", "business", "email", "1234", List("gg"), "addressline1", "postcode")
 
   "POST /register" should {
     "return Created" when {
@@ -31,7 +30,7 @@ class RegistrationControllerSpec extends AbstractControllerTest {
         status(result) shouldBe 500
       }
     }
-    "returns Badrequest" when {
+    "returns BadRequest" when {
       "when no details are sent" in {
         val result = controller.registerAgent().apply(FakeRequest("POST", "/").withHeaders("Content-Type" -> "application/json").withBody(Json.toJson("")))
         status(result) shouldBe 400

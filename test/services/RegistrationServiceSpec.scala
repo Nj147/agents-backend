@@ -6,7 +6,6 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{mock, when}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repos.{AgentDetailsRepo, AgentLoginRepo}
-
 import scala.concurrent.Future
 
 class RegistrationServiceSpec extends AbstractServiceTest {
@@ -14,7 +13,7 @@ class RegistrationServiceSpec extends AbstractServiceTest {
   val detailsRepo: AgentDetailsRepo = mock(classOf[AgentDetailsRepo])
   val loginRepo: AgentLoginRepo = mock(classOf[AgentLoginRepo])
   val service = new RegistrationService(detailsRepo, loginRepo)
-  val agent = AgentRegister("password", "business", "email", 1234, List("gg"), "addressline1", "postcode")
+  val agent: AgentRegister = AgentRegister("password", "business", "email", "1234", List("gg"), "addressline1", "postcode")
 
   "register" should {
     "return a true" in {

@@ -22,7 +22,7 @@ class AgentDetailsRepo @Inject()(mongoComponent: MongoComponent) extends PlayMon
 
   def getDetails(arn: String): Future[Option[AgentDetails]] = collection.find(filter = Filters.eq("arn", arn)).first().toFutureOption()
 
-  def updateContactNumber(arn: String, contactNumber: Long): Future[Boolean] = collection.updateOne(equal("arn", arn), combine(set("contactNumber", contactNumber))).toFuture()
+  def updateContactNumber(arn: String, contactNumber: String): Future[Boolean] = collection.updateOne(equal("arn", arn), combine(set("contactNumber", contactNumber))).toFuture()
     .map {
       _.getMatchedCount match {
         case 1 => true
