@@ -4,16 +4,14 @@ import play.api.libs.json.{JsSuccess, JsValue, Json}
 
 class AgentDetailsSpec extends AbstractModelsTest {
 
-  val agentDetailsModel: AgentDetails = AgentDetails(arn = "ARN51226238", businessName = "testBusinessName", email = "test@gmail.com", contactNumber = "98765".toLong, moc = List("test"), propertyNumber = "test", postcode = "test")
+  val agentDetailsModel: AgentDetails = AgentDetails(arn = "ARN51226238", businessName = "testBusinessName", email = "test@gmail.com", contactNumber = "07986562663", moc = List("test"), propertyNumber = "test", postcode = "test")
   val agentDetailsJs: JsValue = Json.parse(
     """{
       |    "arn" : "ARN51226238",
       |    "businessName" : "testBusinessName",
       |    "email" : "test@gmail.com",
-      |    "contactNumber" : 98765,
-      |    "moc" : [
-      |        "test"
-      |    ],
+      |    "contactNumber" : "07986562663",
+      |    "moc" : ["test"],
       |    "propertyNumber" : "test",
       |    "postcode" : "test"
       |}

@@ -15,11 +15,11 @@ class ChangeAgentDetailsControllerSpec extends AbstractControllerTest {
   val repo: AgentDetailsRepo = mock(classOf[AgentDetailsRepo])
   val controller = new ChangeAgentDetailsController(Helpers.stubControllerComponents(), repo)
 
-  val agentAddress: JsValue = Json.parse("""{"propertyNumber": "1 New Street", "postcode": "AA1 2BB"}""")
-  val contact: JsValue = Json.parse("""{"contactNumber": 7986562663}""")
-  val agentEmail: JsValue = Json.parse("""{"email": "test@test.com"}""")
+  val agentAddress: JsValue = Json.obj("propertyNumber" ->  "1 New Street", "postcode" -> "AA1 2BB")
+  val contact: JsValue = Json.obj("contactNumber" -> "7986562663")
+  val agentEmail: JsValue = Json.obj("email" -> "test@test.com")
   val agentCorrespondence: JsValue = Json.parse("""{ "moc": ["Phone call", "Text message"]}""")
-  val agentDetails: AgentDetails = AgentDetails("ARN324234", "Business Ltd", "email@email.com", "0743534534".toLong, List("Text message"), "21", "SW12T54")
+  val agentDetails: AgentDetails = AgentDetails("ARN324234", "Business Ltd", "email@email.com", "0743534534", List("Text message"), "21", "SW12T54")
   val agentCheck = ("ARN324234")
 
   "GET /details" should {

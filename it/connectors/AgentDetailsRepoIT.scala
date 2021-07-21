@@ -8,8 +8,8 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositorySupport[AgentDetails] {
   lazy val repository = new AgentDetailsRepo(mongoComponent)
 
-  val agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", 0x8, List("test"), "testAddressLine1", "testPostcode")
-  val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", 0x8, List("test"), "AddressLine1", "Postcode")
+  val agent: AgentDetails = AgentDetails("ARN00000", "testBusinessName", "testEmail", "07986562663", List("test"), "testAddressLine1", "testPostcode")
+  val agent2: AgentDetails = AgentDetails("ARN00000", "BusinessName", "Email", "07986562663", List("test"), "AddressLine1", "Postcode")
   val agentAddress: Address = Address("1 New Street", "AA1 2BB")
   val agentEmail = "test@test.com"
 
@@ -63,13 +63,13 @@ class AgentDetailsRepoIT extends AbstractRepoTest with DefaultPlayMongoRepositor
     "return true" when {
       "the contact number has been updated" in {
         await(repository.createAgent(agent: AgentDetails))
-        await(repository.updateContactNumber("ARN00000", "079865626663".toLong)) shouldBe true
-        await(repository.getDetails("ARN00000": String)).get.contactNumber shouldBe "79865626663".toLong
+        await(repository.updateContactNumber("ARN00000", "079865626663")) shouldBe true
+        await(repository.getDetails("ARN00000": String)).get.contactNumber shouldBe "079865626663"
       }
     }
     "returns false " when {
       "the contact number is not updated" in {
-        await(repository.updateContactNumber("ARN00000", "079865626663".toLong)) shouldBe false
+        await(repository.updateContactNumber("ARN00000", "079865626663")) shouldBe false
       }
     }
   }
