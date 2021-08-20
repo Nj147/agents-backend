@@ -9,7 +9,7 @@ import javax.inject.Inject
 import scala.concurrent.Future
 
 class RegistrationController @Inject()(val controllerComponents: ControllerComponents, service: RegistrationService) extends BaseController {
-
+// am i verified?
   def registerAgent(): Action[JsValue] = Action.async(parse.json) {
     _.body.validate[AgentRegister] match {
       case JsSuccess(newAgent, _) => service.register(newAgent).map {
